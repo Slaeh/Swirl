@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "Swirl",
+    "slug": "Swirl",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "Swirl"
+}
