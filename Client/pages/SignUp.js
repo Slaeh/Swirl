@@ -2,12 +2,11 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NativeBaseProvider, Box } from "native-base";
-import SignUp from "../Client/pages/SignUp";
 
-export default function App() {
+export default function SignUp() {
   return (
     <NativeBaseProvider>
-      <SignUp />
+      <Text styles="styles">Hello World!</Text>
     </NativeBaseProvider>
   );
 }
