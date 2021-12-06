@@ -14,7 +14,7 @@ import {
   Flex,
 } from "native-base";
 
-export default function SignUp() {
+export default function SignUp({ navigation }) {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
@@ -37,12 +37,16 @@ export default function SignUp() {
           </Text>
         </Center>
       </Box>
-      <Form showLogin={showLogin} setShowLogin={setShowLogin} />
+      <Form
+        showLogin={showLogin}
+        setShowLogin={setShowLogin}
+        navigation={navigation}
+      />
     </Center>
   );
 }
 
-const Form = ({ showLogin, setShowLogin }) => {
+const Form = ({ showLogin, setShowLogin, navigation }) => {
   return (
     <VStack space={4} w="90%" mt="3" space={100}>
       <FormControl isRequired>
@@ -61,6 +65,7 @@ const Form = ({ showLogin, setShowLogin }) => {
           pt="5"
           pb="5"
           mt="10"
+          onPress={() => navigation.navigate("ShowInformation")}
         >
           {showLogin ? "Login" : "Create Account"}
         </Button>

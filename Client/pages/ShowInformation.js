@@ -6,14 +6,11 @@ import {
   Heading,
   Text,
   Center,
-  FormControl,
-  Input,
   VStack,
   Button,
-  Flex,
 } from "native-base";
 
-export default function ShowFeed({ navigation }) {
+export default function ShowInformation({ navigation }) {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
@@ -48,7 +45,6 @@ export default function ShowFeed({ navigation }) {
 const Form = ({ showLogin, setShowLogin, navigation }) => {
   return (
     <VStack space={4} w="90%" mt="3" space={100}>
-      <Text>Showing Feed</Text>
       <Button
         _text={{ color: "white" }}
         bg="purple.400"
@@ -56,19 +52,10 @@ const Form = ({ showLogin, setShowLogin, navigation }) => {
         pt="5"
         pb="5"
         mt="10"
-        onPress={() => navigation.navigate("SignUp")}
+        onPress={() => navigation.navigate("ShowFeed")}
       >
-        Go back to first page!
+        {"Next"}
       </Button>
     </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
