@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import axios from "axios";
+
 import {
   NativeBaseProvider,
   Box,
@@ -14,41 +15,37 @@ import {
 } from "native-base";
 
 export default function ShowFeed({ navigation }) {
-  const [showLogin, setShowLogin] = useState(false);
+  const [redditData, setRedditData] = useState([]);
+
+  const getRedditData = () => {
+    axios.get("https://www.reddit.com/.json").then((res) => {
+      console.log(res);
+      setRedditData(redditData.concat(res.data));
+    });
+  };
 
   return (
     <Center mt="75px">
-      <Box
-        mb="4"
-        mt="2"
-        bg="purple.300"
-        w="90%"
-        pt="100px"
-        pb="100px"
-        rounded="20px"
-      >
-        <Center>
-          <Heading mb="3">
-            Welcome to <Text color="white">Swirl</Text>
-          </Heading>
-          <Text fontSize="sm" color="white">
-            Create an account or sign in
-          </Text>
-        </Center>
-      </Box>
-      <Form
-        showLogin={showLogin}
-        setShowLogin={setShowLogin}
-        navigation={navigation}
-      />
+      <Form navigation={navigation} getRedditData={getRedditData} />
     </Center>
   );
 }
 
-const Form = ({ showLogin, setShowLogin, navigation }) => {
+const Form = ({ showLogin, setShowLogin, navigation, getRedditData }) => {
   return (
     <VStack space={4} w="90%" mt="3" space={100}>
       <Text>Showing Feed</Text>
+      <Button
+        _text={{ color: "white" }}
+        bg="purple.400"
+        borderRadius="15"
+        pt="5"
+        pb="5"
+        mt="10"
+        onPress={getRedditData}
+      >
+        CLICK ME FOR REDDIT DATA
+      </Button>
       <Button
         _text={{ color: "white" }}
         bg="purple.400"
@@ -63,12 +60,3 @@ const Form = ({ showLogin, setShowLogin, navigation }) => {
     </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
