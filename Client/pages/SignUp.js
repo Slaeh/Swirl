@@ -1,5 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+import registerService from "../services/registerUser";
+import loginService from "../services/login";
 import { StyleSheet, View } from "react-native";
 import {
   NativeBaseProvider,
@@ -84,12 +86,3 @@ const Form = ({ showLogin, setShowLogin, navigation }) => {
     </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import twitterService from "../services/twitter";
+import redditService from "../services/reddit";
 
 import {
   NativeBaseProvider,
@@ -18,21 +19,16 @@ export default function ShowFeed({ navigation }) {
   const [redditData, setRedditData] = useState([]);
   const [twitterData, setTwitterData] = useState([]);
 
-  const getRedditData = () => {
-    axios.get("https://www.reddit.com/.json").then((res) => {
-      console.log(res);
-      setRedditData(redditData.concat(res.data));
-    });
+  const getRedditData = async () => {
+    const redditDataRes = await redditService.getRedditData();
+    console.log(redditDataRes);
+    setRedditData(redditData.concat(redditDataRes));
   };
 
-  const getTwitterData = () => {
-    axios
-      .get("http://localhost:5000/api/twitterFeed")
-      .then((res) => {
-        console.log(res);
-        setTwitterData(twitterData.concat(res.data));
-      })
-      .catch((err) => console.log(err));
+  const getTwitterData = async () => {
+    const twitterDataRes = await twitterService.getTwitterData();
+    console.log(twitterDataRes);
+    setTwitterData(twitterData.concat(twitterDataRes));
   };
 
   return (
