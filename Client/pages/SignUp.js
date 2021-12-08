@@ -20,11 +20,19 @@ export default function SignUp({ navigation }) {
   const [showLogin, setShowLogin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      setTimeout(() => {
+        setErrors({});
+      }, 5000);
+      return;
+    }
 
     await registerService.registerUser({
       email: email,
@@ -59,6 +67,33 @@ export default function SignUp({ navigation }) {
     }
   };
 
+  const validate = () => {
+    if (email === "" && password === "") {
+      setErrors({
+        ...errors,
+        email: "Email is required",
+        password: "Password is required",
+      });
+      return false;
+    } else if (email === "" || password === "") {
+      console.log("here");
+      if (email === "") {
+        setErrors({ ...errors, email: "Email is required" });
+      } else {
+        setErrors({ ...errors, password: "Password is required" });
+      }
+
+      return false;
+    } else if (password.length < 4) {
+      setErrors({
+        ...errors,
+        password: "Password must be greater than 3 characters",
+      });
+      return false;
+    }
+
+    return true;
+  };
   return (
     <Center mt="75px">
       <Box
@@ -84,11 +119,13 @@ export default function SignUp({ navigation }) {
         setShowLogin={setShowLogin}
         navigation={navigation}
         email={email}
+        setEmail={setEmail}
         handleEmailChange={handleEmailChange}
         password={password}
         handlePasswordChange={handlePasswordChange}
         handleFormSubmit={handleFormSubmit}
         handleLoginSubmit={handleLoginSubmit}
+        errors={errors}
       />
     </Center>
   );
@@ -99,15 +136,20 @@ const Form = ({
   setShowLogin,
   navigation,
   email,
+  setEmail,
   handleEmailChange,
   password,
   handlePasswordChange,
   handleFormSubmit,
   handleLoginSubmit,
+  errors,
 }) => {
   return (
     <VStack space={4} w="90%" mt="3" space={100}>
-      <FormControl isRequired>
+      <FormControl
+        isRequired
+        isInvalid={"email" in errors || "password" in errors}
+      >
         <FormControl.Label _text={{ color: "gray.400" }}>
           Email
         </FormControl.Label>
@@ -116,10 +158,23 @@ const Form = ({
           value={email}
           onChange={handleEmailChange}
           p="4"
-          mb="7"
+          mb={"email" in errors ? 0 : 5}
           bg="gray.200"
           placeholder="swirl@gmail.com"
         />
+        {"email" in errors && (
+          <FormControl.ErrorMessage
+            _text={{
+              fontSize: "xs",
+              color: "error.500",
+              fontWeight: 500,
+              marginTop: 0,
+            }}
+          >
+            {errors.email}
+          </FormControl.ErrorMessage>
+        )}
+
         <FormControl.Label _text={{ color: "gray.400" }}>
           Password
         </FormControl.Label>
@@ -131,6 +186,13 @@ const Form = ({
           bg="gray.200"
           placeholder="**********"
         />
+        {"password" in errors && (
+          <FormControl.ErrorMessage
+            _text={{ fontSize: "xs", color: "error.500", fontWeight: 500 }}
+          >
+            {errors.password}
+          </FormControl.ErrorMessage>
+        )}
         <Button
           _text={{ color: "white" }}
           bg="purple.400"
