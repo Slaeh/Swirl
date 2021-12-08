@@ -14,34 +14,12 @@ mongoose.connect(process.env.MONGODB, {
 });
 
 const User = require("./models/user");
+const twitterRouter = require("./controllers/twitter");
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/twitterFeed", async (req, res) => {
-  const params = {
-    query: "JavaScript",
-    max_results: 11,
-  };
-  const twitterResult = await needle(
-    "get",
-    "https://api.twitter.com/2/tweets/search/recent",
-    params,
-    {
-      headers: {
-        "User-Agent": "v2SearchSwirl",
-        Authorization: "Bearer " + process.env.BEARER_TOKEN,
-      },
-    }
-  );
-  if (twitterResult.body) {
-    console.log(twitterResult.body);
-    res.send(twitterResult.body);
-  } else {
-    console.log("an error happened");
-    res.send({ error: "twitter api call failed" });
-  }
-});
+app.use("/api/twitterFeed", twitterRouter);
 
 app.get("/testMongo", (req, res) => {
   const dummyUser = new User({
@@ -55,3 +33,5 @@ app.get("/testMongo", (req, res) => {
 app.listen(5000, () => {
   console.log("Running on port 5000");
 });
+
+module.exports = app;
