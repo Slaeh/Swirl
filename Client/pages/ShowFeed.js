@@ -27,9 +27,10 @@ export default function ShowFeed({ navigation }) {
 
   const getTwitterData = () => {
     axios
-      .get("https://localhost:5000/api/twitterFeed")
+      .get("http://localhost:5000/twitterFeed")
       .then((res) => {
         console.log(res);
+        setTwitterData(twitterData.concat(res.data));
       })
       .catch((err) => console.log(err));
   };
