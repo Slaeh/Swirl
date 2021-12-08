@@ -6,6 +6,14 @@ const cors = require("cors");
 const { default: axios } = require("axios");
 const qs = require("qs");
 const needle = require("needle");
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGODB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const User = require("./models/user");
 
 app.use(express.json());
 app.use(cors());
@@ -33,6 +41,15 @@ app.get("/twitterFeed", async (req, res) => {
     console.log("an error happened");
     res.send({ error: "twitter api call failed" });
   }
+});
+
+app.get("/testMongo", (req, res) => {
+  const dummyUser = new User({
+    email: "swirldummy@generic.com",
+    passwordHash: "somethingrandom",
+  });
+  dummyUser.save();
+  res.send("test");
 });
 
 app.listen(5000, () => {
