@@ -16,6 +16,7 @@ import {
 
 export default function ShowFeed({ navigation }) {
   const [redditData, setRedditData] = useState([]);
+  const [twitterData, setTwitterData] = useState([]);
 
   const getRedditData = () => {
     axios.get("https://www.reddit.com/.json").then((res) => {
@@ -24,14 +25,33 @@ export default function ShowFeed({ navigation }) {
     });
   };
 
+  const getTwitterData = () => {
+    axios
+      .get("https://localhost:5000/api/twitterFeed")
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Center mt="75px">
-      <Form navigation={navigation} getRedditData={getRedditData} />
+      <Form
+        navigation={navigation}
+        getRedditData={getRedditData}
+        getTwitterData={getTwitterData}
+      />
     </Center>
   );
 }
 
-const Form = ({ showLogin, setShowLogin, navigation, getRedditData }) => {
+const Form = ({
+  showLogin,
+  setShowLogin,
+  navigation,
+  getRedditData,
+  getTwitterData,
+}) => {
   return (
     <VStack space={4} w="90%" mt="3" space={100}>
       <Text>Showing Feed</Text>
@@ -45,6 +65,17 @@ const Form = ({ showLogin, setShowLogin, navigation, getRedditData }) => {
         onPress={getRedditData}
       >
         CLICK ME FOR REDDIT DATA
+      </Button>
+      <Button
+        _text={{ color: "white" }}
+        bg="purple.400"
+        borderRadius="15"
+        pt="5"
+        pb="5"
+        mt="10"
+        onPress={getTwitterData}
+      >
+        CLICK ME FOR TWITTER DATA
       </Button>
       <Button
         _text={{ color: "white" }}
