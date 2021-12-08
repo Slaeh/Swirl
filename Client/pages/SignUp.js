@@ -18,6 +18,46 @@ import {
 
 export default function SignUp({ navigation }) {
   const [showLogin, setShowLogin] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    await registerService.registerUser({
+      email: email,
+      password: password,
+    });
+
+    setShowLogin(true);
+    setEmail("");
+    setPassword("");
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const loggedUser = await loginService.login({
+        email: email,
+        password: password,
+      });
+
+      if (loggedUser) {
+        window.sessionStorage.setItem(
+          "loggedSwirlUser",
+          JSON.stringify(loggedUser)
+        );
+        setEmail("");
+        setPassword("");
+        navigation.navigate("ShowInformation");
+      }
+    } catch (exception) {
+      console.log(exception);
+    }
+  };
 
   return (
     <Center mt="75px">
@@ -43,23 +83,54 @@ export default function SignUp({ navigation }) {
         showLogin={showLogin}
         setShowLogin={setShowLogin}
         navigation={navigation}
+        email={email}
+        handleEmailChange={handleEmailChange}
+        password={password}
+        handlePasswordChange={handlePasswordChange}
+        handleFormSubmit={handleFormSubmit}
+        handleLoginSubmit={handleLoginSubmit}
       />
     </Center>
   );
 }
 
-const Form = ({ showLogin, setShowLogin, navigation }) => {
+const Form = ({
+  showLogin,
+  setShowLogin,
+  navigation,
+  email,
+  handleEmailChange,
+  password,
+  handlePasswordChange,
+  handleFormSubmit,
+  handleLoginSubmit,
+}) => {
   return (
     <VStack space={4} w="90%" mt="3" space={100}>
       <FormControl isRequired>
         <FormControl.Label _text={{ color: "gray.400" }}>
           Email
         </FormControl.Label>
-        <Input p="4" mb="7" bg="gray.200" placeholder="swirl@gmail.com" />
+        <Input
+          type="email"
+          value={email}
+          onChange={handleEmailChange}
+          p="4"
+          mb="7"
+          bg="gray.200"
+          placeholder="swirl@gmail.com"
+        />
         <FormControl.Label _text={{ color: "gray.400" }}>
           Password
         </FormControl.Label>
-        <Input p="4" bg="gray.200" placeholder="**********" />
+        <Input
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          p="4"
+          bg="gray.200"
+          placeholder="**********"
+        />
         <Button
           _text={{ color: "white" }}
           bg="purple.400"
@@ -67,7 +138,8 @@ const Form = ({ showLogin, setShowLogin, navigation }) => {
           pt="5"
           pb="5"
           mt="10"
-          onPress={() => navigation.navigate("ShowInformation")}
+          type="submit"
+          onPress={showLogin ? handleLoginSubmit : handleFormSubmit}
         >
           {showLogin ? "Login" : "Create Account"}
         </Button>

@@ -16,12 +16,14 @@ mongoose.connect(process.env.MONGODB, {
 const User = require("./models/user");
 const twitterRouter = require("./controllers/twitter");
 const usersRouter = require("./controllers/users");
+const loginRouter = require("./controllers/login");
 
 app.use(express.json());
 app.use(cors());
 
 app.use("/api/twitterFeed", twitterRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/login", loginRouter);
 
 app.get("/testMongo", (req, res) => {
   const dummyUser = new User({
