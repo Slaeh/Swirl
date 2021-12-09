@@ -15,7 +15,7 @@ import {
 export default function ShowInformation({ navigation }) {
   const [showLogin, setShowLogin] = useState(false);
   const image = {
-    uri: "https://images.pexels.com/photos/1034464/pexels-photo-1034464.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    uri: "https://images.pexels.com/photos/3109807/pexels-photo-3109807.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   };
 
   return (
