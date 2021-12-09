@@ -17,8 +17,8 @@ export default function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="ShowInformation" component={ShowInformation} />
+          {/* <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="ShowInformation" component={ShowInformation} /> */}
           <Stack.Screen name="ShowFeed" component={ShowFeed} />
         </Stack.Navigator>
       </NavigationContainer>
