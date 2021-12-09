@@ -5,8 +5,11 @@ const twitterRouter = require("express").Router();
 twitterRouter.get("/", async (req, res) => {
   console.log("HEREEEEEEEEEEEEEEEEEEEE");
   const params = {
-    query: "JavaScript",
+    query: "JavaScript Web Development",
     max_results: 11,
+    expansions: "author_id",
+    "user.fields": "profile_image_url,username",
+    "tweet.fields": "public_metrics",
   };
   const twitterResult = await needle(
     "get",
