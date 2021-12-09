@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 import {
   NativeBaseProvider,
   Box,
@@ -8,28 +8,56 @@ import {
   Center,
   VStack,
   Button,
+  Image,
+  Flex,
 } from "native-base";
 
 export default function ShowInformation({ navigation }) {
   const [showLogin, setShowLogin] = useState(false);
+  const image = {
+    uri: "https://images.pexels.com/photos/1034464/pexels-photo-1034464.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  };
 
   return (
-    <Center mt="75px" flex={1}>
-      <Center>
-        <Heading fontSize="lg" mb="3">
-          Thanks for joining Swirl! 🍥
-        </Heading>
-        <Text fontSize="md">Continue to see your combined timeline.</Text>
-      </Center>
-
-      <Form
-        showLogin={showLogin}
-        setShowLogin={setShowLogin}
-        navigation={navigation}
+    // <Flex height="100vh" align="center" direction="column">
+    <VStack flex={1}>
+      <ImageBackground
+        source={image}
+        // resizeMode="contain"
+        style={styles.image}
       />
-    </Center>
+
+      <VStack flex={1} mt="3rem">
+        <Center>
+          <Heading fontSize="2xl" mt="" mb="3rem" color="purple.500">
+            Thanks for joining Swirl! 🍥
+          </Heading>
+          <Text fontSize="xl">Continue to see your combined timeline.</Text>
+          <Button
+            _text={{ color: "white", fontWeight: "bold" }}
+            bg="purple.400"
+            borderRadius="15"
+            pt="5"
+            pb="5"
+            mt="8rem"
+            onPress={() => navigation.navigate("ShowFeed")}
+            w="85%"
+          >
+            {"Next"}
+          </Button>
+        </Center>
+      </VStack>
+    </VStack>
+    // </Flex>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    height: "50vh",
+    width: "100%",
+  },
+});
 
 const Form = ({ showLogin, setShowLogin, navigation }) => {
   return (
@@ -40,7 +68,7 @@ const Form = ({ showLogin, setShowLogin, navigation }) => {
         borderRadius="15"
         pt="5"
         pb="5"
-        mt="10"
+        mt="0"
         onPress={() => navigation.navigate("ShowFeed")}
       >
         {"Next"}
