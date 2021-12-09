@@ -14,25 +14,14 @@ export default function ShowInformation({ navigation }) {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
-    <Center mt="75px">
-      <Box
-        mb="4"
-        mt="2"
-        bg="purple.300"
-        w="90%"
-        pt="100px"
-        pb="100px"
-        rounded="20px"
-      >
-        <Center>
-          <Heading mb="3">
-            Welcome to <Text color="white">Swirl</Text>
-          </Heading>
-          <Text fontSize="sm" color="white">
-            Create an account or sign in
-          </Text>
-        </Center>
-      </Box>
+    <Center mt="75px" flex={1}>
+      <Center>
+        <Heading fontSize="lg" mb="3">
+          Thanks for joining Swirl! 🍥
+        </Heading>
+        <Text fontSize="md">Continue to see your combined timeline.</Text>
+      </Center>
+
       <Form
         showLogin={showLogin}
         setShowLogin={setShowLogin}
