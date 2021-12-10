@@ -16,7 +16,7 @@ import {
   Divider,
 } from "native-base";
 
-const RedditPost = ({ item, key }) => {
+const RedditPost = ({ item }) => {
   return (
     <Box border="1" borderRadius="md">
       <VStack space="4" divider={<Divider />}>
@@ -53,25 +53,14 @@ export default function ShowFeed({ navigation }) {
   const [redditData, setRedditData] = useState([]);
   const [twitterData, setTwitterData] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
-
-  // const getRedditData = async () => {
-  //   const redditDataRes = await redditService.getRedditData();
-  //   console.log(redditDataRes.data.children);
-
-  //   setRedditData(redditData.concat(redditDataRes));
-  // };
-
-  // const getTwitterData = async () => {
-  //   const twitterDataRes = await twitterService.getTwitterData();
-  //   console.log("Twitter data", twitterDataRes.data.data);
-  //   setTwitterData(twitterData.concat(twitterDataRes.data));
-  //   // console.log("this is the twitterData", twitterData);
-  // };
+  const [finalData, setFinalData] = useState([]);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     const getRedditData = async () => {
       const redditDataRes = await redditService.getRedditData();
       setRedditData(redditData.concat(redditDataRes.data.children));
+      setDataFetched(true);
     };
 
     const getTwitterData = async () => {
@@ -82,46 +71,37 @@ export default function ShowFeed({ navigation }) {
 
     getRedditData();
     getTwitterData();
-    setDataFetched(true);
-    //
-    //
-    // setGotData(True)
-    // {gotData ? mapshit : null}
   }, []);
+
+  if (dataFetched && isDone == false) {
+    setIsDone(true);
+    const finalArr = redditData.concat(twitterData);
+
+    for (let i = 0; i < 7; i++) {
+      const currentItem = finalArr[i];
+      currentItem.type = "Twitter";
+    }
+    for (let i = 7; i < 32; i++) {
+      const currentItem = finalArr[i];
+      currentItem.type = "Reddit";
+    }
+    const finalCopy = [...finalArr];
+    finalCopy.sort((a, b) => 0.5 - Math.random());
+
+    setFinalData(finalCopy);
+  }
 
   return (
     <>
       <Heading>Cap</Heading>
       {dataFetched &&
-        twitterData.map((item, i) => {
-          console.log("inside twitter map");
-          return <TwitterPost Key={i} item={item} />;
-        })}
-      {dataFetched &&
-        redditData.map((item, i) => {
-          console.log("inside reddit map");
-          return <RedditPost Key={i} item={item} />;
+        finalData.map((item, i) => {
+          if (item.type === "Reddit") {
+            return <RedditPost item={item} key={i} />;
+          } else {
+            return <TwitterPost item={item} key={i} />;
+          }
         })}
     </>
   );
-
-  // if (redditData[0] === undefined && twitterData[0] === undefined) {
-  //   return <></>;
-  // } else {
-  //   console.log("Made it ");
-  //   return (
-  //     <Center mt="75px">
-  //       {twitterData.data.map((item, key) => {
-  //         return <RedditPost key={key} item={item} />;
-  //       })}
-  //     </Center>
-  //   );
-  // }
-
-  // getRedditData();
-  // getTwitterData();
-  // if (redditData.length != 0 && twitterData.length != 0) {
-  //   return <div> test </div>;
-  // }
-  // return <div>failed</div>;
 }
