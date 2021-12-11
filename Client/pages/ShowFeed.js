@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import twitterService from "../services/twitter";
 import redditService from "../services/reddit";
+import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { Foundation } from "@expo/vector-icons";
 
 import {
   NativeBaseProvider,
@@ -19,6 +23,9 @@ import {
   MoreIcon,
   HStack,
   Image,
+  Avatar,
+  Icon,
+  Spacer,
 } from "native-base";
 
 const RedditPost = ({ item }) => {
@@ -34,8 +41,16 @@ const RedditPost = ({ item }) => {
       <Box shadow="2" rounded="lg" w="85%" bgColor={"#FEAF74"} margin={"2"}>
         <Stack space="2" p="4">
           <Flex justify="space-around">
-            <Text color="black">{item.data.author}</Text>
-            <Text color="black">{item.data.subreddit_name_prefixed}</Text>
+            <Flex direction="row">
+              <Text color="black" fontSize="1.1rem" fontWeight="bold">
+                {item.data.author}
+              </Text>
+              <Spacer />
+              <FontAwesome name="reddit" size={24} color="black" />
+            </Flex>
+            <Text color="black" fontSize="1rem">
+              {item.data.subreddit_name_prefixed}
+            </Text>
           </Flex>
           <Heading
             size={["md", "lg", "md"]}
@@ -65,8 +80,14 @@ const RedditPost = ({ item }) => {
             <></>
           )}
         </Stack>
-        <Text> UPS: {item.data.ups}</Text>
-        <Text> COMMENTS: {item.data.num_comments}</Text>
+        <HStack space="4" ml={"2"}>
+          <Entypo name="arrow-bold-up" size={18} color="black">
+            <Text fontWeight={"bold"}>{item.data.ups}</Text>
+          </Entypo>
+          <Foundation name="comment" size={18} color="black">
+            <Text fontWeight={"bold"}> {item.data.num_comments}</Text>
+          </Foundation>
+        </HStack>
       </Box>
     </Center>
   );
@@ -77,21 +98,34 @@ const TwitterPost = ({ item }) => {
     <Center>
       <Box shadow="2" rounded="lg" w="85%" bgColor={"#78C3F0"} margin={"2"}>
         <Stack space="2" p="4">
-          <Text color="black">December 9, 2021</Text>
-          <Heading
-            size={["md", "lg", "md"]}
-            fontWeight="medium"
-            color={"black"}
-          >
-            The Garden City
+          <Flex align="center" direction="row">
+            <Avatar
+              bg="green.500"
+              source={{
+                uri: item.image,
+              }}
+              mr="0.8rem"
+            />
+            <Text color="black" fontSize="1.1rem" fontWeight="bold">
+              {item.username}
+            </Text>
+            <Spacer />
+            <AntDesign name="twitter" size={24} color="black" />
+          </Flex>
+          <Heading size={["md"]} fontWeight="sm" color={"black"}>
+            {item.text}
           </Heading>
-          <Text>
-            Bengaluru (also called Bangalore) is the center of India's high-tech
-            industry. It is located in southern India on the Deccan Plateau.The
-            city is also known for its parks and nightlife. Bangalore is the
-            major center of India's IT industry, popularly known as the Silicon
-            Valley of India.
-          </Text>
+          <HStack space="4">
+            <AntDesign name="heart" size={16} color="black">
+              <Text ml="0.7rem">{item.public_metrics.like_count}</Text>
+            </AntDesign>
+            <FontAwesome name="comment" size={16} color="black">
+              <Text ml="0.7rem">{item.public_metrics.reply_count}</Text>
+            </FontAwesome>
+            <Entypo name="retweet" size={16} color="black">
+              <Text ml="0.7rem">{item.public_metrics.retweet_count}</Text>
+            </Entypo>
+          </HStack>
         </Stack>
       </Box>
     </Center>
@@ -137,10 +171,14 @@ export default function ShowFeed({ navigation }) {
       // console.log(`i = ${i} j = ${i - tweetUsers.length}`);
       const currentItem = finalArr[i];
       currentItem.type = "Twitter";
-      // const currentUser = tweetUsers[i - tweetUsers.length].username;
+      const currentUser =
+        tweetUsers[(i - tweetUsers.length) % tweetUsers.length].username;
       // console.log(typeof tweetUsers[i - tweetUsers.length].username);
-      // currentItem.username = currentUser;
-      // currentItem.image = tweetUsers[i - tweetUsers.length].profile_image_url;
+      currentItem.username = currentUser;
+      currentItem.image =
+        tweetUsers[
+          (i - tweetUsers.length) % tweetUsers.length
+        ].profile_image_url;
     }
     const finalCopy = [...finalArr];
     finalCopy.sort((a, b) => 0.5 - Math.random());
@@ -149,10 +187,14 @@ export default function ShowFeed({ navigation }) {
   }
 
   return (
-    <>
-      <Heading marginLeft={"1.5"} marginBottom={"1.5"}>
-        Your Feed
-      </Heading>
+    <Box vh="100" bgColor={"muted.800"}>
+      <Center>
+        <Heading mt="1rem" marginLeft={"1.5"} marginBottom={"1.5"}>
+          <Text color={"white"}>Your </Text>
+          <Text color={"purple.400"}>Swirl </Text>
+          <Text color={"white"}>Feed 🍥</Text>
+        </Heading>
+      </Center>
       {dataFetched &&
         finalData.map((item, i) => {
           if (item.type === "Reddit") {
@@ -161,6 +203,6 @@ export default function ShowFeed({ navigation }) {
             return <TwitterPost item={item} key={i} />;
           }
         })}
-    </>
+    </Box>
   );
 }

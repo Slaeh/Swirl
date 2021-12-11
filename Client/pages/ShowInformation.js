@@ -10,6 +10,7 @@ import {
   Button,
   Image,
   Flex,
+  Pressable,
 } from "native-base";
 
 export default function ShowInformation({ navigation }) {
@@ -20,34 +21,38 @@ export default function ShowInformation({ navigation }) {
 
   return (
     // <Flex height="100vh" align="center" direction="column">
-    <VStack flex={1}>
-      <ImageBackground
-        source={image}
-        // resizeMode="contain"
-        style={styles.image}
-      />
+    <Box height="100vh" bgColor={"muted.800"}>
+      <VStack flex={1}>
+        <ImageBackground
+          source={image}
+          // resizeMode="contain"
+          style={styles.image}
+        />
 
-      <VStack flex={1} mt="3rem">
-        <Center>
-          <Heading fontSize="2xl" mt="" mb="3rem" color="purple.500">
-            Thanks for joining Swirl! 🍥
-          </Heading>
-          <Text fontSize="xl">Continue to see your combined timeline.</Text>
-          <Button
-            _text={{ color: "white", fontWeight: "bold" }}
-            bg="purple.400"
-            borderRadius="15"
-            pt="5"
-            pb="5"
-            mt="8rem"
-            onPress={() => navigation.navigate("ShowFeed")}
-            w="85%"
-          >
-            {"Next"}
-          </Button>
-        </Center>
+        <VStack flex={1} mt="3rem">
+          <Center>
+            <Heading fontSize="2xl" mt="" mb="3rem" color="purple.500">
+              Thanks for joining Swirl! 🍥
+            </Heading>
+            <Text fontSize="xl" color="white">
+              Continue to see your combined timeline.
+            </Text>
+            <Button
+              _text={{ color: "white", fontWeight: "bold" }}
+              bg="purple.400"
+              borderRadius="15"
+              pt="5"
+              pb="5"
+              mt="8rem"
+              onPress={() => navigation.navigate("ShowFeed")}
+              w="85%"
+            >
+              {"Next"}
+            </Button>
+          </Center>
+        </VStack>
       </VStack>
-    </VStack>
+    </Box>
     // </Flex>
   );
 }
@@ -58,21 +63,3 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
-const Form = ({ showLogin, setShowLogin, navigation }) => {
-  return (
-    <VStack space={4} w="90%" mt="3" space={100}>
-      <Button
-        _text={{ color: "white" }}
-        bg="purple.400"
-        borderRadius="15"
-        pt="5"
-        pb="5"
-        mt="0"
-        onPress={() => navigation.navigate("ShowFeed")}
-      >
-        {"Next"}
-      </Button>
-    </VStack>
-  );
-};
