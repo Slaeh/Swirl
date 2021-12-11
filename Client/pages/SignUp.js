@@ -76,7 +76,6 @@ export default function SignUp({ navigation }) {
       });
       return false;
     } else if (email === "" || password === "") {
-      console.log("here");
       if (email === "") {
         setErrors({ ...errors, email: "Email is required" });
       } else {
@@ -95,39 +94,41 @@ export default function SignUp({ navigation }) {
     return true;
   };
   return (
-    <Center mt="75px">
-      <Box
-        mb="4"
-        mt="2"
-        bg="purple.300"
-        w="90%"
-        pt="100px"
-        pb="100px"
-        rounded="20px"
-      >
-        <Center>
-          <Heading mb="3">
-            Welcome to <Text color="white">Swirl</Text>
-          </Heading>
-          <Text fontSize="sm" color="white">
-            Create an account or sign in
-          </Text>
-        </Center>
-      </Box>
-      <Form
-        showLogin={showLogin}
-        setShowLogin={setShowLogin}
-        navigation={navigation}
-        email={email}
-        setEmail={setEmail}
-        handleEmailChange={handleEmailChange}
-        password={password}
-        handlePasswordChange={handlePasswordChange}
-        handleFormSubmit={handleFormSubmit}
-        handleLoginSubmit={handleLoginSubmit}
-        errors={errors}
-      />
-    </Center>
+    <Box height="100vh" bgColor={"muted.800"}>
+      <Center mt="75px">
+        <Box
+          mb="4"
+          mt="2"
+          bg="purple.400"
+          w="90%"
+          pt="100px"
+          pb="100px"
+          rounded="20px"
+        >
+          <Center>
+            <Heading mb="3">
+              <Text color="white"> Welcome to Swirl</Text>
+            </Heading>
+            <Text fontSize="sm" color="white">
+              Create an account or sign in
+            </Text>
+          </Center>
+        </Box>
+        <Form
+          showLogin={showLogin}
+          setShowLogin={setShowLogin}
+          navigation={navigation}
+          email={email}
+          setEmail={setEmail}
+          handleEmailChange={handleEmailChange}
+          password={password}
+          handlePasswordChange={handlePasswordChange}
+          handleFormSubmit={handleFormSubmit}
+          handleLoginSubmit={handleLoginSubmit}
+          errors={errors}
+        />
+      </Center>
+    </Box>
   );
 }
 
@@ -150,10 +151,11 @@ const Form = ({
         isRequired
         isInvalid={"email" in errors || "password" in errors}
       >
-        <FormControl.Label _text={{ color: "gray.400" }}>
+        <FormControl.Label _text={{ color: "purple.400" }}>
           Email
         </FormControl.Label>
         <Input
+          fontWeight="bold"
           type="email"
           value={email}
           onChange={handleEmailChange}
@@ -175,10 +177,11 @@ const Form = ({
           </FormControl.ErrorMessage>
         )}
 
-        <FormControl.Label _text={{ color: "gray.400" }}>
+        <FormControl.Label _text={{ color: "purple.400" }}>
           Password
         </FormControl.Label>
         <Input
+          fontWeight="bold"
           type="password"
           value={password}
           onChange={handlePasswordChange}
@@ -188,7 +191,7 @@ const Form = ({
         />
         {"password" in errors && (
           <FormControl.ErrorMessage
-            _text={{ fontSize: "xs", color: "error.500", fontWeight: 500 }}
+            _text={{ fontSize: "xs", color: "red.500", fontWeight: 500 }}
           >
             {errors.password}
           </FormControl.ErrorMessage>
@@ -207,11 +210,19 @@ const Form = ({
         </Button>
         <Center>
           {showLogin ? (
-            <Text mt="10" onPress={() => setShowLogin(!showLogin)}>
+            <Text
+              mt="10"
+              onPress={() => setShowLogin(!showLogin)}
+              color="white"
+            >
               Don't have an account? <Text color="purple.400">Sign Up</Text>
             </Text>
           ) : (
-            <Text mt="10" onPress={() => setShowLogin(!showLogin)}>
+            <Text
+              mt="10"
+              onPress={() => setShowLogin(!showLogin)}
+              color="white"
+            >
               Have an account? <Text color="purple.400">Sign in</Text>
             </Text>
           )}
